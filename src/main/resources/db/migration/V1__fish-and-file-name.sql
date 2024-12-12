@@ -1,4 +1,4 @@
-CREATE TABLE `fish`
+CREATE TABLE IF NOT EXISTS `fish`
 (
     `id`         bigint  NOT NULL AUTO_INCREMENT,
     `catch_date` datetime(6)  DEFAULT NULL,
@@ -7,7 +7,7 @@ CREATE TABLE `fish`
     PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `fish_file_name`
+CREATE TABLE IF NOT EXISTS `fish_file_name`
 (
     `fish_id`   bigint NOT NULL,
     `file_name` varchar(255),

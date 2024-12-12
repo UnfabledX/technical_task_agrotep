@@ -1,0 +1,36 @@
+services:
+  database:
+    image: mysql:9.1.0
+    restart: on-failure
+    environment:
+      MYSQL_DATABASE: fishstore
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+    env_file:
+      - .env
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 4s
+      timeout: 2s
+      retries: 2
+    volumes:
+      - my-db:/var/lib/mysql
+
+  fishstore:
+    image: unfabled/agrotep:fishstore-0.0.1
+    restart: on-failure
+    environment:
+      DATABASE_PASSWORD: root
+      DATABASE_USERNAME: root
+      DATABASE_URL: jdbc:mysql://database:3306/fishstore
+      DATABASE_NAME: fishstore
+      SPRING_PROFILE: prod
+    depends_on:
+      database:
+        condition: service_healthy
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+volumes:
+  my-db:
